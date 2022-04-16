@@ -2,20 +2,28 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import MenuIcon from '@material-ui/icons/Menu'
 import CloseIcon from '@material-ui/icons/Close'
+import { selectCars } from '../features/car/carSlice'
+import { useSelector } from 'react-redux'
+import zIndex from '@material-ui/core/styles/zIndex'
 
 function Header() {
   const [burgerStatus, setBurgerStatus] = useState(false); 
-
+  const cars = useSelector(selectCars)
   return (
     <Container>
         <a>
             <img src="/images/logo.svg" alt="LOGO" />
         </a>
         <Menu>
+            {cars && cars.map((car, Index)=> 
+                <a href="#" key={Index}>{car}</a>
+            )}
+            {/*
             <a href="#">Model S</a>
             <a href="#">Model 3</a>
             <a href="#">Model X</a>
             <a href="#">Model y</a>
+            */}
         </Menu> 
         <RightMenu>
             <a href="#">Shop</a>
@@ -26,6 +34,9 @@ function Header() {
             <CloseWraper>
                 <CustomClose onClick={() => setBurgerStatus(false)}/>
             </CloseWraper>
+            {cars && cars.map((car, Index)=> 
+                <li key={Index}><a href="#">{car}</a></li>
+            )}
             <li><a href="#">Existing Inventory</a></li>
             <li><a href="#">Used Inventory</a></li>
             <li><a href="#">Trade-in</a></li>
@@ -93,6 +104,7 @@ const BurgerNav = styled.div`
     flex-direction: column;
     text-align: start;
     transform: ${props => props.show ? 'translateX(0)' : 'translateX(100%)' };
+    transition: transform 0.2s;
     li{
         padding: 15px 0;
         border-bottom: 1px solid rgba(0, 0, 0, .2);
